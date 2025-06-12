@@ -1,33 +1,27 @@
 from nlp_module.intents import intents
 from utils.text_to_speech import speak_arabic
-from utils.translator import translate_to_arabic, translate_with_context
+# from utils.translator import translate_to_arabic, translate_with_context
 from data_sources.api_fetcher import intent_handlers
 
-# List of supported planets in Arabic
-planets = ["المريخ", "المشتري", "زحل", "عطارد", "نبتون", "الأرض", "أورانوس", "بلوتو", "الزهرة"]
+planets = ["المريخ", "المشتري", "زحل", "عطارد", "نبتون", "الأرض", "أورانوس", "الزهرة"]
 
-# Configuration settings
 class AssistantConfig:
     def __init__(self):
-        self.enable_tts = True  # Enable/disable text-to-speech
+        self.enable_tts = True 
         self.enable_translation = False  # Enable if you need to translate responses
-        self.auto_speak = True  # Automatically speak responses
-        self.voice = "ar-SA-HamedNeural"  # Default Arabic voice
+        self.auto_speak = True 
+        self.voice = "ar-SA-HamedNeural"
 
 config = AssistantConfig()
 
 def extract_planet(text):
-    """Extract planet name from user input text"""
     for planet in planets:
         if planet in text:
             return planet
     return None
 
 def respond(intent, planet):
-    """
-    Respond to the user's intent and planet.
-    """
-    # Static responses for non-API intents
+
     static_responses = {
         "select_planet": lambda p: f"تم اختيار {p} في المحاكاة." if p else "يرجى تحديد كوكب.",
         "greeting": lambda p: "مرحبًا! كيف يمكنني مساعدتك؟",
@@ -37,14 +31,12 @@ def respond(intent, planet):
         "unknown": lambda p: "عذرًا، لم أفهم طلبك. هل يمكنك إعادة الصياغة؟"
     }
 
-    # If intent is static, return its response
     if intent in static_responses:
         response = static_responses[intent](planet)
         if config.enable_tts:
             speak_arabic(response)
         return response
 
-    # For API-based intents
     if intent in intent_handlers:
         if not planet:
             error_messages = {
@@ -69,13 +61,12 @@ def respond(intent, planet):
             if config.enable_tts:
                 speak_arabic(response)
             return response
-        # Call the appropriate handler
+        
         response = intent_handlers[intent](planet)
         if config.enable_tts:
             speak_arabic(response)
         return response
 
-    # Fallback for unknown intents
     response = "عذرًا، لم أفهم طلبك."
     if config.enable_tts:
         speak_arabic(response)

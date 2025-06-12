@@ -1,5 +1,3 @@
-# planet_name_mapper.py
-
 planet_names = {
     "عطارد": "mercury",
     "الزهرة": "venus",
@@ -8,6 +6,5 @@ planet_names = {
     "المشتري": "jupiter",
     "زحل": "saturn",
     "أورانوس": "uranus",
-    "نبتون": "neptune",
-    "بلوتو": "pluto"
+    "نبتون": "neptune"
 }
