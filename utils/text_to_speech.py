@@ -12,9 +12,7 @@ async def edge_tts_generate(text, filename, voice="ar-SA-HamedNeural"):
     await communicate.save(filename)
 
 def speak_arabic_enhanced(text):
-    """
-    Enhanced Edge TTS with audio processing for better quality
-    """
+   
     temp_filename = f"temp_raw_{uuid.uuid4()}.mp3"
     enhanced_filename = f"temp_enhanced_{uuid.uuid4()}.mp3"
     try:
@@ -23,15 +21,13 @@ def speak_arabic_enhanced(text):
         audio = AudioSegment.from_mp3(temp_filename)
         audio = normalize(audio)
         audio = compress_dynamic_range(audio)
-        audio = audio + 3  # Slight volume boost
+        audio = audio + 3 
         
-        # Slightly slow down playback
         audio = audio._spawn(audio.raw_data, overrides={
             "frame_rate": int(audio.frame_rate * 0.95)
         }).set_frame_rate(audio.frame_rate)
         audio.export(enhanced_filename, format="mp3", bitrate="128k")
         
-        # Play enhanced audio
         pygame.mixer.music.load(enhanced_filename)
         pygame.mixer.music.play()
         while pygame.mixer.music.get_busy():
@@ -41,7 +37,7 @@ def speak_arabic_enhanced(text):
         print(f"Enhanced TTS error: {e}")
         speak_arabic_basic(text)
     finally:
-        # Always try to remove files
+        
         for f in [temp_filename, enhanced_filename]:
             try:
                 if os.path.exists(f):
@@ -50,9 +46,7 @@ def speak_arabic_enhanced(text):
                 print(f"Cleanup error: {cleanup_e}")
 
 def speak_arabic_basic(text):
-    """
-    Basic Edge TTS without audio processing
-    """
+    
     filename = f"temp_{uuid.uuid4()}.mp3"
     try:
         pygame.mixer.init()
@@ -72,11 +66,9 @@ def speak_arabic_basic(text):
             print(f"Cleanup error: {cleanup_e}")
 
 def speak_arabic(text):
-    """
-    Try enhanced version first, fallback to basic
-    """
+    
     try:
         speak_arabic_enhanced(text)
     except ImportError:
-        print("⚠️ pydub not available, using basic TTS")
+        print("pydub not available, using basic TTS")
         speak_arabic_basic(text)

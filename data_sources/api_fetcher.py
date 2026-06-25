@@ -157,8 +157,7 @@ def get_planet_color_arabic(planet_ar):
         "الزهرة": "أصفر باهت مع سحب بيضاء",
         "الأرض": "أزرق وأخضر وبني مع سحب بيضاء",
         "عطارد": "رمادي مائل للبني",
-        "المشتري": "برتقالي وبني مع خطوط ملونة",
-        "بلوتو": "بني محمر"
+        "المشتري": "برتقالي وبني مع خطوط ملونة"
     }
     color = color_knowledge.get(planet_ar)
     if color:
@@ -214,7 +213,6 @@ def get_planet_satellites_missions_arabic(planet_ar):
     else:
         return f"لا توجد بيانات دقيقة لدي عن البعثات التي استكشفت {planet_ar}."
 
-# Intent to handler mapping for use in assistant.py
 intent_handlers = {
     "ask_info": get_planet_info_arabic,
     "ask_temp": get_planet_temperature_arabic,
